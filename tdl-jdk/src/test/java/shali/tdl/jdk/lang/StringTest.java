@@ -1,12 +1,17 @@
 package shali.tdl.jdk.lang;
 
+import lombok.extern.slf4j.Slf4j;
+
+import static org.junit.Assert.*;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.regex.Pattern;
 
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Slf4j
 public class StringTest {
     /**
      * new String() 是错误的用法，不仅浪费内存，还浪费时间，因为 "" 本身就是字符串，还要再包裹一次
@@ -15,7 +20,7 @@ public class StringTest {
     void newString() {
         // 这种使用字符串常量池的方式，其返回的已经是字符串类了。
         String name = "tony";
-        assertInstanceOf(String.class, name);
+        assertTrue(name instanceof String);
         int loopCount = 100000;
         // 比较内存大小
         long nowFreeMemory = Runtime.getRuntime().freeMemory();
@@ -32,9 +37,9 @@ public class StringTest {
         long rightUsageFreeMemory = Runtime.getRuntime().freeMemory();
         long nowRightUsage = System.currentTimeMillis();
         assertTrue((nowErrorUsage - now) > (nowRightUsage - nowErrorUsage));
-        System.out.printf("循环 %d 次，错误初始化字符串，比正确多耗时 %d ms%n", loopCount, ((nowErrorUsage - now) - (nowRightUsage - nowErrorUsage)));
+        log.info(String.format("循环 %d 次，错误初始化字符串，比正确多耗时 %d ms", loopCount, ((nowErrorUsage - now) - (nowRightUsage - nowErrorUsage))));
         assertTrue((nowFreeMemory - errorUsageFreeMemory) > (errorUsageFreeMemory - rightUsageFreeMemory));
-        System.out.printf("循环 %d 次，错误初始化字符串，比正确多耗内存 %d byte%n", loopCount, ((nowFreeMemory - errorUsageFreeMemory) - (errorUsageFreeMemory - rightUsageFreeMemory)));
+        log.info(String.format("循环 %d 次，错误初始化字符串，比正确多耗内存 %d byte", loopCount, ((nowFreeMemory - errorUsageFreeMemory) - (errorUsageFreeMemory - rightUsageFreeMemory))));
     }
 
     /**
@@ -59,6 +64,16 @@ public class StringTest {
         }
         long nowRightUsage = System.currentTimeMillis();
         assertTrue(nowRightUsage - nowErrorUsage < nowErrorUsage - now);
-        System.out.printf("循环 %d 次，仅编译一次正则比循环中编译正则节省 %d ms%n", loopCount, (nowErrorUsage - now) - (nowRightUsage - nowErrorUsage));
+        log.info(String.format("循环 %d 次，仅编译一次正则比循环中编译正则节省 %d ms", loopCount, (nowErrorUsage - now) - (nowRightUsage - nowErrorUsage)));
+    }
+
+    /**
+     * 字符串替换的效率要远高于正则替换
+     */
+    @Test
+    public void replace() {
+        Assertions.assertEquals("20230612", "2023-06-12".replace("-", ""));
+        Assertions.assertEquals("20230612", "2023-06-12".replaceAll("-", ""));
+        log.warn("字符串替换，推荐使用 String.replace，效率比正则替换 String.replaceAll 高");
     }
 }
