@@ -7,6 +7,9 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Date;
 
 public class DateUtilTest {
@@ -126,5 +129,27 @@ public class DateUtilTest {
         assertTrue(DateUtil.ageOfNow("1991-01-01") > 30);
         // 判断是否为闰年
         assertFalse(DateUtil.isLeapYear(2023));
+    }
+
+    @Test
+    public void timestamp() {
+        // 2023-08-16 15:18:10 时间戳是 1692170290
+        String dateTime = "2023-08-16 15:18:10";
+        // 东八区
+        ZoneOffset zoneOffset = ZoneOffset.of("+8");
+        assertEquals(1692170290, LocalDateTimeUtil.parse(dateTime, DatePattern.NORM_DATETIME_PATTERN).toEpochSecond(zoneOffset));
+        // Date 获取的时间戳是毫秒
+    }
+
+    @Test
+    public void offsetTime() {
+        // 2023-08-16 15:18:10 时间戳是 1692170290
+        String dateTime = "2023-08-16 15:18:10";
+        long timestamp = 1692170290L;
+        // 东八区
+        ZoneOffset zoneOffset = ZoneOffset.of("+8");
+        // 测试时间偏移
+        long offsetSeconds = 8L;
+        assertEquals(timestamp + offsetSeconds, LocalDateTimeUtil.parse(dateTime, DatePattern.NORM_DATETIME_PATTERN).plusSeconds(offsetSeconds).toEpochSecond(zoneOffset));
     }
 }
