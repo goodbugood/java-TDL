@@ -1,6 +1,5 @@
 package shali.jhp.core.collection;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,9 +17,12 @@ public class ListUtil {
      * @return {@link List}<{@link T}>
      */
     public static <T> List<T> merge(List<T> listA, List<T> listB) {
-        List<T> list = new ArrayList<>(listA);
-        list.addAll(listB);
-        return list;
+        // 方式一：集合合并
+        // List<T> list = new ArrayList<>(listA);
+        // list.addAll(listB);
+        // return list;
+        // 方式二：java 8 的 stream
+        return Stream.concat(listA.stream(), listB.stream()).collect(Collectors.toList());
     }
 
     /**
