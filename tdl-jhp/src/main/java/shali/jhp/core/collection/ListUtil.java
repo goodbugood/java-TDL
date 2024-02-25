@@ -30,8 +30,8 @@ public class ListUtil {
     /**
      * 将集合 a 和集合 b 合并
      *
-     * @param listA 集合 a
-     * @param listB 集合 b
+     * @param listA    集合 a
+     * @param listB    集合 b
      * @param distinct 是否去重
      * @return {@link List}<{@link T}>
      */
@@ -40,6 +40,11 @@ public class ListUtil {
             return Stream.concat(listA.stream(), listB.stream()).distinct().collect(Collectors.toList());
         }
         return merge(listA, listB);
+    }
+
+    // 获取集合对象属性的集合
+    public static <T, R> List<R> columnToList(Function<T, R> function, List<T> list) {
+        return list.stream().map(function).collect(Collectors.toList());
     }
 
     /**
