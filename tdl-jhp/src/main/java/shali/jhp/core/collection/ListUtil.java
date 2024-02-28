@@ -43,13 +43,13 @@ public class ListUtil {
     }
 
     /**
-     * 获取集合对象属性的集合
+     * 获取集合对象属性的集合，类似 php 的 array_column
      *
      * @param function 对象属性
      * @param list 集合
      * @return {@link List}<{@link R}>
      */
-    public static <T, R> List<R> columnToList(Function<T, R> function, List<T> list) {
+    public static <T, R> List<R> column(List<T> list, Function<T, R> function) {
         return list.stream().map(function).collect(Collectors.toList());
     }
 
