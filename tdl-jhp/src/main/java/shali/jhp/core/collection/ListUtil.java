@@ -22,7 +22,7 @@ public class ListUtil {
      * @param listB 集合 b
      * @return {@link List}<{@link T}>
      */
-    public static <T> List<T> combine(List<T> listA, List<T> listB) {
+    public static <T> List<T> merge(List<T> listA, List<T> listB) {
         // 方式二：java 8 的 stream
         return Stream.concat(listA.stream(), listB.stream()).collect(Collectors.toList());
     }
@@ -35,11 +35,11 @@ public class ListUtil {
      * @param distinct 是否去重
      * @return {@link List}<{@link T}>
      */
-    public static <T> List<T> combine(List<T> listA, List<T> listB, boolean distinct) {
+    public static <T> List<T> merge(List<T> listA, List<T> listB, boolean distinct) {
         if (distinct) {
             return Stream.concat(listA.stream(), listB.stream()).distinct().collect(Collectors.toList());
         }
-        return combine(listA, listB);
+        return merge(listA, listB);
     }
 
     /**
