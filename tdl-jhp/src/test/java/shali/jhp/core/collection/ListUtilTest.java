@@ -12,7 +12,7 @@ class ListUtilTest {
         List<Integer> integerListA = Arrays.asList(1, 2, 3, 4);
         List<Integer> integerListB = Arrays.asList(3, 4, 5, 6);
         // 将 2 个 list 进行合并
-        List<Integer> merge = ListUtil.merge(integerListA, integerListB);
+        List<Integer> merge = ListUtil.combine(integerListA, integerListB);
         Assertions.assertEquals("[1, 2, 3, 4, 3, 4, 5, 6]", merge.toString());
     }
 
@@ -21,10 +21,10 @@ class ListUtilTest {
         List<Integer> integerListA = Arrays.asList(1, 2, 3, 4);
         List<Integer> integerListB = Arrays.asList(3, 4, 5, 6);
         // 将 2 个 list 进行合并
-        List<Integer> merge = ListUtil.merge(integerListA, integerListB, false);
+        List<Integer> merge = ListUtil.combine(integerListA, integerListB, false);
         Assertions.assertEquals("[1, 2, 3, 4, 3, 4, 5, 6]", merge.toString());
         // 合并去重
-        List<Integer> mergeDistinct = ListUtil.merge(integerListA, integerListB, true);
+        List<Integer> mergeDistinct = ListUtil.combine(integerListA, integerListB, true);
         Assertions.assertEquals("[1, 2, 3, 4, 5, 6]", mergeDistinct.toString());
     }
 }
