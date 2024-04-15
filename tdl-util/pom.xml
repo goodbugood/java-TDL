@@ -9,5 +9,5 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>tdl-util</artifactId>
+    <artifactId>tdl-util</artifactId><dependencies><dependency><groupId>cn.hutool</groupId><artifactId>hutool-all</artifactId><version>5.6.3</version><scope>compile</scope></dependency></dependencies>
 </project>
