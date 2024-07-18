@@ -16,6 +16,9 @@
         <module>tdl-lombok</module>
         <module>tdl-redisTemplate</module>
         <module>tdl-util</module>
+        <module>tdl-easyexcel</module>
+        <module>tdl-jhp</module>
+        <module>tdl-core</module>
     </modules>
 
     <name>java-TDL</name>
@@ -25,112 +28,116 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <junit.version>4.13.2</junit.version>
+        <lombok.version>1.18.24</lombok.version>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
-            <scope>test</scope>
-        </dependency>
-        <!--为了代码简洁，引入 lombok-->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
-        </dependency>
-        <!--添加日志依赖-->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.36</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.4.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>1.7.36</version>
-        </dependency>
-        <!--测试两点gps距离-->
-        <!--<dependency>
-            <groupId>com.spatial4j</groupId>
-            <artifactId>spatial4j</artifactId>
-            <version>0.5</version>
-        </dependency>-->
-        <!--测试打日志-->
-        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.18.0</version>
-        </dependency>
-        <!--google和apache的优秀工具库-->
-        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>31.1-jre</version>
-        </dependency>
-        <!--常用字符串处理库-->
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.12.0</version>
-        </dependency>
-        <!--编码使用此库，如果jdk1.8，那么使用内置base64效率高-->
-        <!--commons-codec:commons-codec:jar:1.11:compile-->
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.11</version>
-        </dependency>
-        <!--http工具库-->
-        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.13</version>
-        </dependency>
-        <!--json处理，此包不是兼容版本，只含2-->
-        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
-        <dependency>
-            <groupId>com.alibaba.fastjson2</groupId>
-            <artifactId>fastjson2</artifactId>
-            <version>2.0.9</version>
-        </dependency>
-        <!--goodle开源的简洁依赖注入框架-->
-        <!-- https://mvnrepository.com/artifact/com.google.inject/guice -->
-        <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>5.1.0</version>
-        </dependency>
-        <!--php影子库-->
-        <!--<dependency>
-            <groupId>shali</groupId>
-            <artifactId>php-shadow</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>E:/mygithub/php-shadow/out/artifacts/php_shadow_jar/php-shadow.jar</systemPath>
-        </dependency>-->
-        <!--注入依赖mybatis-->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.29</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>3.5.9</version>
-        </dependency>
-    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <!--为了代码简洁，引入 lombok-->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <!--添加日志依赖-->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.36</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.4.5</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>1.7.36</version>
+            </dependency>
+            <!--测试两点gps距离-->
+            <!--<dependency>
+                <groupId>com.spatial4j</groupId>
+                <artifactId>spatial4j</artifactId>
+                <version>0.5</version>
+            </dependency>-->
+            <!--测试打日志-->
+            <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>2.18.0</version>
+            </dependency>
+            <!--google和apache的优秀工具库-->
+            <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>31.1-jre</version>
+            </dependency>
+            <!--常用字符串处理库-->
+            <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.12.0</version>
+            </dependency>
+            <!--编码使用此库，如果jdk1.8，那么使用内置base64效率高-->
+            <!--commons-codec:commons-codec:jar:1.11:compile-->
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.11</version>
+            </dependency>
+            <!--http工具库-->
+            <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>4.5.13</version>
+            </dependency>
+            <!--json处理，此包不是兼容版本，只含2-->
+            <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>2.0.9</version>
+            </dependency>
+            <!--goodle开源的简洁依赖注入框架-->
+            <!-- https://mvnrepository.com/artifact/com.google.inject/guice -->
+            <dependency>
+                <groupId>com.google.inject</groupId>
+                <artifactId>guice</artifactId>
+                <version>5.1.0</version>
+            </dependency>
+            <!--php影子库-->
+            <!--<dependency>
+                <groupId>shali</groupId>
+                <artifactId>php-shadow</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+                <scope>system</scope>
+                <systemPath>E:/mygithub/php-shadow/out/artifacts/php_shadow_jar/php-shadow.jar</systemPath>
+            </dependency>-->
+            <!--注入依赖mybatis-->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>8.0.29</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>3.5.9</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
