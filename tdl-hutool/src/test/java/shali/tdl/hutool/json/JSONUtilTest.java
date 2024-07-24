@@ -1,5 +1,8 @@
 package shali.tdl.hutool.json;
 
+import cn.hutool.json.JSONConfig;
+import cn.hutool.json.JSONNull;
+import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import org.junit.jupiter.api.Test;
 import shali.tdl.jdk.util.Student;
@@ -7,12 +10,12 @@ import shali.tdl.jdk.util.Student;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class JSONUtilTest {
+class JSONUtilTest {
     /**
      * json 串转 Java bean
      */
     @Test
-    public void toBean() {
+    void toBean() {
         String student = "{\"name\":\"tony\",\"age\":23}";
         Student studentBean = JSONUtil.toBean(student, Student.class);
         assertEquals("tony", studentBean.getName());
@@ -28,5 +31,49 @@ public class JSONUtilTest {
         assertEquals("tony", studentBean3.getName());
         assertEquals(23, studentBean3.getAge());
         assertNull(studentBean3.getScoreInfo());
+    }
+
+    /**
+     * Java Bean 转 json，忽略空值
+     */
+    @Test
+    void parseObjNonNull() {
+        Student student = new Student();
+        student.setName("tony");
+        // 解析 bean 时忽略空值
+        JSONObject jsonObject = JSONUtil.parseObj(student, true);
+        assertEquals("tony", jsonObject.get("name"));
+        assertNull(jsonObject.get("age"));
+        assertNull(jsonObject.get("scoreInfo"));
+        String jsonStr = jsonObject.toString();
+        assertEquals("{\"name\":\"tony\"}", jsonStr);
+        // 解析 bean 时不忽略空值，json 按照 bean 属性顺序输出
+        JSONObject jsonObject2 = JSONUtil.parseObj(student, false, true);
+        assertEquals("tony", jsonObject2.get("name"));
+        assertEquals(JSONNull.NULL, jsonObject2.get("age"));
+        assertEquals(JSONNull.NULL, jsonObject2.get("scoreInfo"));
+        assertEquals("{\"name\":\"tony\",\"age\":null,\"scoreInfo\":null}", jsonObject2.toString());
+    }
+
+    /**
+     * 学习，练习 JSONConfig
+     */
+    @Test
+    void jsonConfig() {
+        JSONConfig jsonConfig = JSONConfig.create();
+        // 按字段顺序输出，默认不按字段顺序输出
+        jsonConfig.setOrder(true);
+        // 忽略空值，默认不忽略
+        jsonConfig.setIgnoreNullValue(true);
+        Student student = new Student();
+        student.setName("tony");
+        JSONObject jsonObject = JSONUtil.parseObj(student, jsonConfig);
+        assertEquals("tony", jsonObject.get("name"));
+        assertNull(jsonObject.get("age"));
+        // 如果不忽略空值，null 会被转换成 JSONNull，而不是 null
+        jsonConfig.setIgnoreNullValue(false);
+        JSONObject jsonObject1 = JSONUtil.parseObj(student, jsonConfig);
+        assertEquals(null, jsonObject.get("age"));
+        assertEquals(JSONNull.NULL, jsonObject1.get("scoreInfo"));
     }
 }
