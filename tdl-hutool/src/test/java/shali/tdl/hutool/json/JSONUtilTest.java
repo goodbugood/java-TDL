@@ -1,14 +1,10 @@
 package shali.tdl.hutool.json;
 
-import cn.hutool.json.JSONConfig;
-import cn.hutool.json.JSONNull;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
+import cn.hutool.json.*;
 import org.junit.jupiter.api.Test;
 import shali.tdl.jdk.util.Student;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class JSONUtilTest {
     /**
@@ -75,5 +71,23 @@ class JSONUtilTest {
         JSONObject jsonObject1 = JSONUtil.parseObj(student, jsonConfig);
         assertEquals(null, jsonObject.get("age"));
         assertEquals(JSONNull.NULL, jsonObject1.get("scoreInfo"));
+    }
+
+    /**
+     * 判断是否是 json 格式字符串
+     * isJson 方法有坑，不可用
+     */
+    @Test
+    void isJson() {
+        assertTrue(JSONUtil.isJson("{\"name\":\"tony\",\"age\":23}"));
+        // 结束符号不是 }
+        assertFalse(JSONUtil.isJson("{\"name\":\"tony\",\"age\":23"));
+        // 尾部有空格，但是自动去除空格，所以还是 json 格式
+        assertTrue(JSONUtil.isJson("{\"name\":\"tony\",\"age\":23} "));
+        // isJson 的判断很简单，就是是否是 { 开头，} 结尾
+        String jsonStr = "{tony}";
+        assertTrue(JSONUtil.isJson(jsonStr));
+        // 这才是正确的判断 json 格式串
+        assertThrows(JSONException.class, () -> JSONUtil.parseObj(jsonStr));
     }
 }
